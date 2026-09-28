@@ -1,0 +1,150 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { formatDate } from '../utils/seo';
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  kicker?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  date?: Date;
+  large?: boolean;
+}
+const { href, title, description, kicker, image, imageAlt, date, large = false } = Astro.props;
+---
+
+<article class:list={['card', { 'card--large': large }]}>
+  <a href={href} class="card-link">
+    {
+      image && (
+        <div class="card-media">
+          <Image
+            src={image}
+            alt={imageAlt ?? ''}
+            widths={large ? [400, 700, 1000] : [300, 500, 700]}
+            sizes={large ? '(max-width: 900px) 100vw, 640px' : '(max-width: 900px) 100vw, 380px'}
+            loading="lazy"
+          />
+        </div>
+      )
+    }
+    <div class="card-body">
+      {kicker && <span class="card-kicker">{kicker}</span>}
+      <h3 class="card-title">{title}</h3>
+      <p class="card-desc">{description}</p>
+      <span class="card-more">
+        Read
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4"/></svg>
+        {date && <time class="card-date">{formatDate(date)}</time>}
+      </span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card {
+    border: 1px solid var(--rule);
+    background: var(--paper-2);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+    height: 100%;
+  }
+
+  .card:hover {
+    border-color: var(--gold-line);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -28px rgba(28, 23, 18, 0.5);
+  }
+
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .card-media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .card--large .card-media {
+    aspect-ratio: 3 / 2;
+  }
+
+  .card-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .card:hover .card-media :global(img) {
+    transform: scale(1.04);
+  }
+
+  .card-body {
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .card-kicker {
+    font-family: var(--font-ui);
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 600;
+  }
+
+  .card-title {
+    font-size: var(--fs-h3);
+    line-height: 1.15;
+  }
+
+  .card--large .card-title {
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.2rem);
+  }
+
+  .card-desc {
+    color: var(--ink-muted);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .card-more {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--gold-ink);
+  }
+
+  .card-more svg {
+    width: 14px;
+    height: 14px;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .card:hover .card-more svg {
+    transform: translateX(3px);
+  }
+
+  .card-date {
+    margin-left: auto;
+    color: var(--ink-faint);
+    font-weight: 400;
+  }
+</style>

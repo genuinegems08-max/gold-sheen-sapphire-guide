@@ -1,0 +1,145 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+const { headings } = Astro.props;
+
+// Only h2/h3 in the contents; h2 are top-level, h3 nested.
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  toc.length > 0 && (
+    <nav class="toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <div class="toc-progress" aria-hidden="true"><span class="toc-progress-bar"></span></div>
+      <ul>
+        {toc.map((h) => (
+          <li class={h.depth === 3 ? 'toc-sub' : ''}>
+            <a href={`#${h.slug}`} data-toc-link={h.slug}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    position: sticky;
+    top: 6rem;
+    font-family: var(--font-ui);
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+
+  .toc-title {
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+
+  .toc-progress {
+    height: 2px;
+    background: var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: var(--space-2);
+  }
+
+  .toc-progress-bar {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-bright));
+    transition: width 80ms linear;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc-progress-bar {
+      transition: none;
+    }
+  }
+
+  .toc ul {
+    list-style: none;
+    border-left: 1px solid var(--rule);
+  }
+
+  .toc li {
+    margin: 0;
+  }
+
+  .toc-sub a {
+    padding-left: 1.9rem;
+    font-size: 0.82rem;
+  }
+
+  .toc a {
+    display: block;
+    padding: 0.35rem 0 0.35rem 1rem;
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+    font-size: 0.88rem;
+    line-height: 1.35;
+    color: var(--ink-muted);
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .toc a:hover {
+    color: var(--ink);
+  }
+
+  .toc a.is-active {
+    color: var(--gold-ink);
+    border-left-color: var(--gold-deep);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+  const bar = document.querySelector<HTMLElement>('.toc-progress-bar');
+  const article = document.querySelector<HTMLElement>('.article-body');
+
+  if (links.length) {
+    const ids = links.map((l) => l.dataset.tocLink!);
+    const targets = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+
+    // Highlight the section currently in view.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            links.forEach((l) => l.classList.remove('is-active'));
+            const active = links.find((l) => l.dataset.tocLink === entry.target.id);
+            active?.classList.add('is-active');
+          }
+        });
+      },
+      { rootMargin: '-10% 0px -75% 0px', threshold: 0 }
+    );
+    targets.forEach((t) => observer.observe(t));
+
+    // Reading progress in the TOC (the "sheen" tracking the read).
+    if (bar && article) {
+      const update = () => {
+        const rect = article.getBoundingClientRect();
+        const total = rect.height - window.innerHeight;
+        const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
+        bar.style.width = `${Math.min(100, (scrolled / Math.max(total, 1)) * 100)}%`;
+      };
+      update();
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+    }
+  }
+</script>

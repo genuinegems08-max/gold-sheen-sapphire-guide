@@ -1,0 +1,9 @@
+# Netlify configuration — used if you deploy via Git (continuous deploy).
+# For drag-and-drop deploys this file is ignored (you just drop the dist folder).
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

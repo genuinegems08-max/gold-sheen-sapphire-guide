@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { readingTime } from '../../utils/seo';
+import { breadcrumbsFor, kickerFor, relatedFor } from '../../utils/guide';
+import Figure from '../../components/mdx/Figure.astro';
+import KeyTakeaways from '../../components/mdx/KeyTakeaways.astro';
+import PullQuote from '../../components/mdx/PullQuote.astro';
+import Callout from '../../components/mdx/Callout.astro';
+import References from '../../components/mdx/References.astro';
+
+// Editorial components available in every article's MDX without importing.
+const mdxComponents = { Figure, KeyTakeaways, PullQuote, Callout, References };
+
+export async function getStaticPaths() {
+  const entries = await getCollection('guide', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, all: entries },
+  }));
+}
+
+const { entry, all } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const readMins = readingTime(entry.body ?? '');
+const breadcrumbs = breadcrumbsFor(entry);
+const kicker = kickerFor(entry);
+const related = relatedFor(entry, all);
+---
+
+<ArticleLayout
+  entry={entry}
+  headings={headings}
+  readMins={readMins}
+  breadcrumbs={breadcrumbs}
+  kicker={kicker}
+  related={related}
+>
+  <Content components={mdxComponents} />
+</ArticleLayout>

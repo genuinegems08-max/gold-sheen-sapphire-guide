@@ -1,0 +1,7 @@
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" rx="9" fill="#0a0908"/>
+  <g transform="translate(4,4) scale(0.833)" color="#c9a35a">
+    <polygon points="14,4 34,4 44,14 44,34 34,44 14,44 4,34 4,14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+    <text x="24" y="25" text-anchor="middle" dominant-baseline="central" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="500" font-size="26" fill="currentColor">g</text>
+  </g>
+</svg>

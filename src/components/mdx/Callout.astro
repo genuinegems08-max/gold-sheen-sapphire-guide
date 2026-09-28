@@ -1,0 +1,26 @@
+---
+/**
+ * A labelled callout box. `type` sets the colour/label.
+ *   <Callout type="tip" title="Tip">Body text…</Callout>
+ * Types: note (default), tip, warning, key.
+ */
+interface Props {
+  type?: 'note' | 'tip' | 'warning' | 'key';
+  title?: string;
+}
+const { type = 'note', title } = Astro.props;
+const defaults: Record<string, string> = {
+  note: 'Note',
+  tip: 'Tip',
+  warning: 'Caution',
+  key: 'Key fact',
+};
+const label = title ?? defaults[type];
+---
+
+<aside class:list={['callout', `callout--${type}`]} role="note">
+  <p class="callout-label">{label}</p>
+  <div class="callout-body">
+    <slot />
+  </div>
+</aside>

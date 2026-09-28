@@ -1,0 +1,146 @@
+---
+import { SITE, PILLARS, NAV } from '../consts';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <hr class="sheen-line sheen-line--thin" aria-hidden="true" />
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <span class="brand-word">
+        <b>Gold Sheen Sapphire</b>
+        <span>The Guide</span>
+      </span>
+      <p class="text-muted mt-3">
+        An independent editorial record of Gold Sheen Sapphire — a rare
+        chatoyant sapphire from a single, now-depleted deposit in Kenya.
+      </p>
+      <p class="colophon mt-3">
+        Documented from laboratory reports and peer-reviewed gemmology.
+        Informational only — not valuation or investment advice.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="footer-head">The Guide</h2>
+      <ul class="footer-links">
+        {PILLARS.map((p) => <li><a href={`/guide/${p.slug}/`}>{p.label}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer-head">Reference</h2>
+      <ul class="footer-links">
+        {
+          NAV.filter((n) => n.href !== '/').map((n) => (
+            <li><a href={n.href}>{n.label}</a></li>
+          ))
+        }
+      </ul>
+      <h2 class="footer-head mt-4">Elsewhere</h2>
+      <ul class="footer-links">
+        <li><a href={SITE.mainSite} rel="noopener">The Collection ↗</a></li>
+        <li><a href={SITE.social.instagram} rel="noopener">{SITE.social.instagramHandle} ↗</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© {year} {SITE.brand}. All rights reserved.</span>
+    <span>{SITE.tagline}</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: var(--space-7);
+    background: var(--paper-2);
+    border-top: 1px solid var(--rule);
+  }
+
+  .footer .sheen-line {
+    margin-top: -1px;
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-6) var(--space-4);
+  }
+
+  @media (min-width: 820px) {
+    .footer-grid {
+      grid-template-columns: 1.6fr 1fr 1fr;
+    }
+  }
+
+  .brand-word b {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: 1.15rem;
+    color: var(--ink);
+  }
+
+  .brand-word span {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: 0.62rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-top: 3px;
+  }
+
+  .footer-brand p {
+    max-width: 46ch;
+    font-size: 1rem;
+  }
+
+  .colophon {
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    color: var(--ink-faint);
+  }
+
+  .footer-head {
+    font-family: var(--font-ui);
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+  }
+
+  .footer-links {
+    list-style: none;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.6em;
+  }
+
+  .footer-links a {
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    color: var(--ink-muted);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .footer-links a:hover {
+    color: var(--gold-ink);
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: space-between;
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    color: var(--ink-faint);
+  }
+</style>

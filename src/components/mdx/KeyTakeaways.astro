@@ -1,0 +1,22 @@
+---
+/**
+ * A boxed "key takeaways" / abstract block. Place it right after the intro.
+ * Put a Markdown bullet list inside:
+ *
+ *   <KeyTakeaways>
+ *   - First takeaway.
+ *   - Second takeaway.
+ *   </KeyTakeaways>
+ */
+interface Props {
+  title?: string;
+}
+const { title = 'Key takeaways' } = Astro.props;
+---
+
+<aside class="key-takeaways" aria-label={title}>
+  <p class="kt-title">{title}</p>
+  <div class="kt-body">
+    <slot />
+  </div>
+</aside>

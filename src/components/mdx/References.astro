@@ -1,0 +1,23 @@
+---
+/**
+ * A "References & further reading" section for the end of an article.
+ * Put a numbered or bulleted Markdown list inside; it renders as a compact,
+ * academically-styled bibliography.
+ *
+ *   <References>
+ *   1. Hughes, R.W. (2017). *Ruby & Sapphire: A Gemologist's Guide*. Bangkok: RWH Publishing.
+ *   2. …
+ *   </References>
+ */
+interface Props {
+  title?: string;
+}
+const { title = 'References & further reading' } = Astro.props;
+---
+
+<section class="references" aria-labelledby="references-heading">
+  <h2 id="references-heading">{title}</h2>
+  <div class="references-body">
+    <slot />
+  </div>
+</section>

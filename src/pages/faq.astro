@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { FAQS } from '../data/faq';
+import { absoluteUrl } from '../utils/seo';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'FAQ', href: '/faq/' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': absoluteUrl('/faq/#faq'),
+  mainEntity: FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+
+<BaseLayout
+  title="Gold Sheen Sapphire — Frequently Asked Questions"
+  description="Answers to the most common questions about Gold Sheen Sapphire: what it is, where it comes from, whether it is natural, how it compares to star sapphire, value, durability, and how to spot fakes."
+  schema={[faqSchema]}
+>
+  <section class="section container">
+    <Breadcrumbs items={breadcrumbs} />
+    <div class="page-head">
+      <span class="eyebrow">Reference</span>
+      <h1 class="page-title">Frequently asked questions</h1>
+      <p class="lead mt-3">
+        Short, sourced answers to what people ask most about Gold Sheen
+        Sapphire. For the full treatment, follow the links into the guide.
+      </p>
+    </div>
+
+    <hr class="sheen-line" style="margin-block: var(--space-4) var(--space-5)" aria-hidden="true" />
+
+    <dl class="faq-list">
+      {
+        FAQS.map((f) => (
+          <div class="faq-row">
+            <dt>{f.question}</dt>
+            <dd>{f.answer}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <p class="faq-more">
+      Still curious? Start with
+      <a class="text-link" href="/guide/what-is-gold-sheen-sapphire/">What is Gold Sheen Sapphire</a>
+      or browse the <a class="text-link" href="/glossary/">glossary</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    max-width: 720px;
+  }
+  .page-title {
+    font-size: var(--fs-h1);
+    margin-top: var(--space-2);
+  }
+
+  .faq-list {
+    max-width: 760px;
+  }
+
+  .faq-row {
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--rule);
+  }
+
+  .faq-row:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .faq-row dt {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+
+  .faq-row dd {
+    margin: 0;
+    color: var(--ink-muted);
+    max-width: 68ch;
+  }
+
+  .faq-more {
+    margin-top: var(--space-4);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    color: var(--ink-muted);
+  }
+</style>

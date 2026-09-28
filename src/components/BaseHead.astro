@@ -1,0 +1,117 @@
+---
+import { SITE } from '../consts';
+import { canonicalFrom, absoluteUrl, pageTitle } from '../utils/seo';
+import JsonLd from './JsonLd.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Override the canonical (rarely needed — defaults to the current URL). */
+  canonical?: string;
+  /** Path under /public or absolute URL for the share image. */
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  isHome?: boolean;
+  noindex?: boolean;
+  /** Page-specific schema.org objects (Article, FAQPage, BreadcrumbList…). */
+  schema?: Record<string, unknown>[];
+  /** For og:type=article. */
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = SITE.ogImage,
+  ogType = 'website',
+  isHome = false,
+  noindex = false,
+  schema = [],
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
+
+const canonicalUrl = canonical ?? canonicalFrom(Astro.url);
+const fullTitle = pageTitle(title, isHome);
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage);
+
+// Always-present site identity schema (helps entity/knowledge-graph building).
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': absoluteUrl('/#organization'),
+  name: SITE.brand,
+  url: SITE.url,
+  description: SITE.description,
+  logo: absoluteUrl('/favicon.svg'),
+  sameAs: [SITE.social.instagram, SITE.mainSite],
+};
+
+const siteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': absoluteUrl('/#website'),
+  name: SITE.title,
+  url: SITE.url,
+  description: SITE.description,
+  inLanguage: SITE.lang,
+  publisher: { '@id': absoluteUrl('/#organization') },
+};
+---
+
+<!-- Essentials -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+{
+  noindex ? (
+    <meta name="robots" content="noindex, nofollow" />
+  ) : (
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+  )
+}
+
+<!-- Icons -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
+<meta name="theme-color" content="#f7f2e8" />
+
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE.brand} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:locale" content={SITE.locale} />
+{ogType === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{ogType === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<!-- Fonts: preconnect + a single stylesheet request, non-blocking -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&display=swap"
+/>
+
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
+
+<!-- Global site identity schema -->
+<JsonLd schema={orgSchema} />
+<JsonLd schema={siteSchema} />
+{schema.map((s) => <JsonLd schema={s} />)}

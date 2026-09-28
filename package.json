@@ -1,0 +1,26 @@
+{
+  "name": "gold-sheen-sapphire-guide",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The definitive editorial guide to Gold Sheen Sapphire — a rare chatoyant sapphire from a single, now-depleted Kenyan deposit.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "build:fast": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.4.0",
+    "astro": "^5.13.0",
+    "sharp": "^0.34.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.8.3"
+  }
+}

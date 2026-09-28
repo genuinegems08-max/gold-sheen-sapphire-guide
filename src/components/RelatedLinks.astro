@@ -1,0 +1,115 @@
+---
+interface Item {
+  href: string;
+  title: string;
+  kicker?: string;
+  description?: string;
+}
+interface Props {
+  items: Item[];
+  heading?: string;
+}
+const { items, heading = 'Continue reading' } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <aside class="related" aria-label={heading}>
+      <p class="related-head">
+        <span class="eyebrow eyebrow--plain">{heading}</span>
+      </p>
+      <ul class="related-list">
+        {items.map((item) => (
+          <li>
+            <a href={item.href}>
+              {item.kicker && <span class="related-kicker">{item.kicker}</span>}
+              <span class="related-title">{item.title}</span>
+              {item.description && <span class="related-desc">{item.description}</span>}
+              <span class="related-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}
+
+<style>
+  .related {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--rule);
+  }
+
+  .related-head {
+    margin-bottom: var(--space-3);
+  }
+
+  .related-list {
+    list-style: none;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 640px) {
+    .related-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .related-list a {
+    display: block;
+    position: relative;
+    padding: var(--space-3);
+    padding-right: 2.4rem;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--paper-2);
+    height: 100%;
+    transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  }
+
+  .related-list a:hover {
+    border-color: var(--gold-line);
+  }
+
+  .related-kicker {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .related-title {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .related-desc {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    color: var(--ink-muted);
+    margin-top: 0.4rem;
+    line-height: 1.45;
+  }
+
+  .related-arrow {
+    position: absolute;
+    right: var(--space-3);
+    top: var(--space-3);
+    color: var(--gold-deep);
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .related-list a:hover .related-arrow {
+    transform: translateX(3px);
+  }
+</style>

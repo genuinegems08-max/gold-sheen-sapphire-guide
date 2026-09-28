@@ -1,0 +1,17 @@
+---
+/**
+ * A display pull-quote / epigraph. Optionally attribute it.
+ *   <PullQuote cite="Al-Biruni, 11th century">The text of the quote.</PullQuote>
+ */
+interface Props {
+  cite?: string;
+}
+const { cite } = Astro.props;
+---
+
+<figure class="pullquote">
+  <blockquote>
+    <slot />
+  </blockquote>
+  {cite && <figcaption>— {cite}</figcaption>}
+</figure>

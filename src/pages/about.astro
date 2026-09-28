@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../consts';
+import { absoluteUrl } from '../utils/seo';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about/' },
+];
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': absoluteUrl('/about/#about'),
+  name: 'About the Gold Sheen Sapphire Guide',
+  url: absoluteUrl('/about/'),
+  isPartOf: { '@id': absoluteUrl('/#website') },
+  about: { '@id': absoluteUrl('/#organization') },
+};
+---
+
+<BaseLayout
+  title="About — The Gold Sheen Sapphire Guide"
+  description="Who publishes the Gold Sheen Sapphire Guide, how it is researched, and the standards behind it — an independent editorial record built from laboratory reports and peer-reviewed gemmology."
+  schema={[aboutSchema]}
+>
+  <section class="section container">
+    <Breadcrumbs items={breadcrumbs} />
+    <div class="about-head">
+      <span class="eyebrow">About</span>
+      <h1 class="page-title">An independent record of a finite stone</h1>
+      <p class="lead mt-3">
+        The Gold Sheen Sapphire Guide exists to be the clearest, most complete
+        and most trustworthy source on a single, remarkable material — so that
+        anyone researching it, from collectors to gemmologists, can rely on what
+        they find here.
+      </p>
+    </div>
+
+    <hr class="sheen-line" style="margin-block: var(--space-4) var(--space-6)" aria-hidden="true" />
+
+    <div class="about-body prose">
+      <h2>Why this guide</h2>
+      <p>
+        Gold Sheen Sapphire is unusual twice over: it displays a natural optical
+        phenomenon few sapphires share, and it comes from one deposit that is
+        now depleted. Because the material is finite and often misunderstood,
+        reliable information about it is scattered across trade articles,
+        laboratory notes and journal papers. This guide gathers that knowledge
+        into one structured, cited reference.
+      </p>
+
+      <h2>How we research it</h2>
+      <p>
+        Every pillar and article is built from primary sources: independent
+        laboratory reports, peer-reviewed gemmological literature, and first-hand
+        examination of material from the original deposit. Where a claim is
+        specific — a figure, a date, a laboratory finding — we tie it to its
+        source. Where the trade is genuinely uncertain, we say so rather than
+        guess.
+      </p>
+
+      <aside class="note">
+        <p>
+          <strong>Editorial standard.</strong> This is an informational resource,
+          not a valuation or investment service. Nothing here is a price
+          guarantee or financial advice. For a formal opinion on a specific
+          stone, obtain a report from a recognised gemmological laboratory.
+        </p>
+      </aside>
+
+      <h2>Who writes it</h2>
+      <p>
+        Articles carry a byline and, where relevant, a “reviewed by” credit from
+        a qualified gemologist, so you can see who stands behind the content.
+        We name real people and real credentials — expertise you can check is
+        the only kind worth citing.
+      </p>
+
+      <h2>Corrections</h2>
+      <p>
+        Found something we should fix or update? We take accuracy seriously and
+        welcome corrections. Reach us at
+        <a href={`mailto:${SITE.social.email}`}>{SITE.social.email}</a>.
+      </p>
+
+      <h2>Contact</h2>
+      <ul>
+        <li>Email — <a href={`mailto:${SITE.social.email}`}>{SITE.social.email}</a></li>
+        <li>Instagram — <a href={SITE.social.instagram} rel="noopener">{SITE.social.instagramHandle}</a></li>
+        <li>The collection — <a href={SITE.mainSite} rel="noopener">goldsheensapphire.net</a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-head {
+    max-width: 760px;
+  }
+  .page-title {
+    font-size: var(--fs-h1);
+    margin-top: var(--space-2);
+  }
+  .about-body {
+    max-width: var(--measure);
+  }
+</style>

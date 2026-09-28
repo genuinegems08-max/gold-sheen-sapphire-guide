@@ -1,0 +1,96 @@
+---
+import { getPerson } from '../data/authors';
+import { formatDate, isoDate } from '../utils/seo';
+
+interface Props {
+  authorId: string;
+  reviewerId?: string;
+  publishDate: Date;
+  updatedDate?: Date;
+  readMins: number;
+}
+const { authorId, reviewerId, publishDate, updatedDate, readMins } = Astro.props;
+const author = getPerson(authorId);
+const reviewer = reviewerId ? getPerson(reviewerId) : null;
+---
+
+<div class="byline">
+  <img class="byline-avatar" src={author.avatar} alt="" width="48" height="48" loading="lazy" />
+  <div class="byline-meta">
+    <p class="byline-line">
+      <span class="byline-by">By</span>
+      <span class="byline-name">{author.name}</span>
+      {author.credential && <span class="byline-cred">· {author.credential}</span>}
+    </p>
+    <p class="byline-dates">
+      {
+        updatedDate ? (
+          <>Updated <time datetime={isoDate(updatedDate)}>{formatDate(updatedDate)}</time></>
+        ) : (
+          <time datetime={isoDate(publishDate)}>{formatDate(publishDate)}</time>
+        )
+      }
+      <span class="byline-dot">·</span>
+      {readMins} min read
+      {
+        reviewer && (
+          <>
+            <span class="byline-dot">·</span>
+            Reviewed by <span class="byline-reviewer">{reviewer.name}</span>
+            {reviewer.credential && <>, {reviewer.credential}</>}
+          </>
+        )
+      }
+    </p>
+  </div>
+</div>
+
+<style>
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+  }
+
+  .byline-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex: none;
+    border: 1px solid var(--rule);
+  }
+
+  .byline-line {
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+
+  .byline-by {
+    color: var(--ink-faint);
+  }
+
+  .byline-name {
+    font-weight: 600;
+  }
+
+  .byline-cred {
+    color: var(--ink-muted);
+  }
+
+  .byline-dates {
+    font-size: var(--fs-small);
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+
+  .byline-dot {
+    margin-inline: 0.4em;
+    color: var(--rule-strong);
+  }
+
+  .byline-reviewer {
+    color: var(--ink);
+    font-weight: 500;
+  }
+</style>
