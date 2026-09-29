@@ -49,9 +49,4 @@ export const FAQS: FaqEntry[] = [
     answer:
       'Genuine material shows a directional sheen that moves with the light and, under magnification, a characteristic field of oriented platy inclusions. Imitations may use foil backing, glass, or assembled stones with a flat, static shimmer. The most reliable confirmation is a report from an independent gemmological laboratory. See the buying guide for a full checklist.',
   },
-  {
-    question: 'How do I care for Gold Sheen Sapphire?',
-    answer:
-      'Clean it with warm water, mild soap and a soft brush; avoid ultrasonic and steam cleaners, which can stress included stones. Store it separately so harder points do not scratch other pieces. Full guidance is in the care and maintenance pillar.',
-  },
 ];

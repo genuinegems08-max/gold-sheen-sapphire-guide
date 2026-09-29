@@ -9,11 +9,12 @@ node_modules/
 .astro/
 
 # raw source material (original uploads, research PDFs, unedited archive)
-# — reference only, NOT part of the published site
-content/
-Gold Sheen Sapphire/
-ig2/
--CERTIFICATE OF GOLD SHEEN SAPPHIRE (1)/
+# — reference only, NOT part of the published site.
+# Leading slash = ROOT-ONLY, so these do NOT match src/content/ etc.
+/content/
+/Gold Sheen Sapphire/
+/ig2/
+/-CERTIFICATE OF GOLD SHEEN SAPPHIRE (1)/
 
 # generated files
 *.tsbuildinfo
