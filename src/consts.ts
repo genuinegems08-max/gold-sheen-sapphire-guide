@@ -30,6 +30,14 @@ export const SITE = {
   /** Default social-share image (relative to site root). */
   ogImage: '/og/gold-sheen-sapphire-guide-cover.jpg',
 
+  /**
+   * Analytics. Paste your Google Analytics 4 Measurement ID (e.g. "G-XXXXXXXXXX")
+   * to switch tracking on site-wide. Leave "" and no analytics script loads at all.
+   */
+  analytics: {
+    ga4: '',
+  },
+
   /** Organisation contact / social — reused across schema + footer. */
   social: {
     instagram: 'https://instagram.com/gold_sheen_sapphire',

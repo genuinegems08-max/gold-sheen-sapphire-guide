@@ -115,3 +115,20 @@ const siteSchema = {
 <JsonLd schema={orgSchema} />
 <JsonLd schema={siteSchema} />
 {schema.map((s) => <JsonLd schema={s} />)}
+
+<!-- Analytics (loads only when SITE.analytics.ga4 is set) -->
+{
+  SITE.analytics.ga4 && (
+    <>
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${SITE.analytics.ga4}`}
+        is:inline
+      />
+      <script
+        is:inline
+        set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${SITE.analytics.ga4}');`}
+      />
+    </>
+  )
+}
